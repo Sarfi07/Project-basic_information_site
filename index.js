@@ -1,21 +1,23 @@
 const http = require("http");
 const fs = require("fs");
+const path = require("path");
+const PORT = process.env.PORT || 8080;
 
 const server = http.createServer((req, res) => {
   res.setHeader("Content-Type", "text/html");
 
-  let path = "./";
+  let filePath = "./";
   switch (req.url) {
     case "/":
-      path += "index.html";
+      filePath += "index.html";
       res.statusCode = 200;
       break;
     case "/about":
-      path += "about.html";
+      filePath += "about.html";
       res.statusCode = 200;
       break;
     case "/contact":
-      path += "contact-me.html";
+      filePath += "contact-me.html";
       res.statusCode = 200;
       break;
     case "/contact-me":
@@ -24,12 +26,12 @@ const server = http.createServer((req, res) => {
       res.end();
       break;
     default:
-      path += "404.html";
+      filePath += "404.html";
       res.statusCode = 404;
       break;
   }
 
-  fs.readFile(path, (err, data) => {
+  fs.readFile(path.join(__dirname, filePath), (err, data) => {
     if (err) {
       console.log(err);
       res.end();
@@ -40,6 +42,6 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(3000, "localhost", () => {
+server.listen(PORT, () => {
   console.log("Server Running");
 });
